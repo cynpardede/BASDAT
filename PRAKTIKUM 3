@@ -1,0 +1,551 @@
+Setting environment for using XAMPP for Windows.
+MyPC PRO@MYPCPRO c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| hospital           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+6 rows in set (0.014 sec)
+
+MariaDB [(none)]> use hospital;
+Database changed
+MariaDB [hospital]> show tables;
++--------------------+
+| Tables_in_hospital |
++--------------------+
+| doctor             |
+| patient            |
++--------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> desc patient;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| patient_code    | int(10)     | NO   | PRI | NULL    |       |
+| patient_name    | varchar(30) | YES  |     | NULL    |       |
+| patient_address | varchar(20) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.022 sec)
+
+MariaDB [hospital]> create table doctor(
+    -> doc_code int(11) primary key,
+    -> doc_name varchar(20),
+    -> specialization varchar(20),
+    -> gender char(10),
+    -> doc_address varchar(25),
+    -> email varchar (15));
+ERROR 1050 (42S01): Table 'doctor' already exists
+MariaDB [hospital]> show tables;
++--------------------+
+| Tables_in_hospital |
++--------------------+
+| doctor             |
+| patient            |
++--------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> desc doctor;
+ERROR 1932 (42S02): Table 'hospital.doctor' doesn't exist in engine
+MariaDB [hospital]> drop table doctor;
+Query OK, 0 rows affected, 1 warning (0.034 sec)
+
+MariaDB [hospital]> create table doctor(
+    -> doc_code int(11) primary key,
+    -> doc_name varchar(20),
+    -> specialization varchar(20),
+    -> gender char(10),
+    -> doc_address varchar(25),
+    -> email varchar (15));
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [hospital]> desc doctor;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| doc_code       | int(11)     | NO   | PRI | NULL    |       |
+| doc_name       | varchar(20) | YES  |     | NULL    |       |
+| specialization | varchar(20) | YES  |     | NULL    |       |
+| gender         | char(10)    | YES  |     | NULL    |       |
+| doc_address    | varchar(25) | YES  |     | NULL    |       |
+| email          | varchar(15) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.018 sec)
+
+MariaDB [hospital]> create table madicine (
+    -> med_code char(5) primary key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 2
+MariaDB [hospital]> create table madicine (
+    -> med_code char(5) primary key,
+    -> med_name varchar(20) not null,
+    -> med_type enum('tablet', 'powder', 'pill', 'capsule', 'syrup') not null,
+    -> stock int(4) not null,
+    -> expired_date date not null);
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [hospital]> desc medicine;
+ERROR 1146 (42S02): Table 'hospital.medicine' doesn't exist
+MariaDB [hospital]> desc madicine;
++--------------+--------------------------------------------------+------+-----+---------+-------+
+| Field        | Type                                             | Null | Key | Default | Extra |
++--------------+--------------------------------------------------+------+-----+---------+-------+
+| med_code     | char(5)                                          | NO   | PRI | NULL    |       |
+| med_name     | varchar(20)                                      | NO   |     | NULL    |       |
+| med_type     | enum('tablet','powder','pill','capsule','syrup') | NO   |     | NULL    |       |
+| stock        | int(4)                                           | NO   |     | NULL    |       |
+| expired_date | date                                             | NO   |     | NULL    |       |
++--------------+--------------------------------------------------+------+-----+---------+-------+
+5 rows in set (0.016 sec)
+
+MariaDB [hospital]> create prescription(
+    -> pres_code char(5) primary key,
+    -> pres_date date not null,
+    -> med_rules varchar(5) not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'prescription(
+pres_code char(5) primary key,
+pres_date date not null,
+med_rul...' at line 1
+MariaDB [hospital]> create prescription(
+    -> pres_code char(5) primary key,
+    -> pres_date date not null,
+    -> med_rules varchar(5) not null);show ttables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'prescription(
+pres_code char(5) primary key,
+pres_date date not null,
+med_rul...' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ttables' at line 1
+MariaDB [hospital]> show tables;
++--------------------+
+| Tables_in_hospital |
++--------------------+
+| doctor             |
+| madicine           |
+| patient            |
++--------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> create table prescription(
+    -> pres_code char(5) primary key,
+    -> pres_date date not null,
+    -> med_rules varchar(5) not null);
+Query OK, 0 rows affected (0.016 sec)
+
+MariaDB [hospital]> desc prescription;
++-----------+------------+------+-----+---------+-------+
+| Field     | Type       | Null | Key | Default | Extra |
++-----------+------------+------+-----+---------+-------+
+| pres_code | char(5)    | NO   | PRI | NULL    |       |
+| pres_date | date       | NO   |     | NULL    |       |
+| med_rules | varchar(5) | NO   |     | NULL    |       |
++-----------+------------+------+-----+---------+-------+
+3 rows in set (0.017 sec)
+
+MariaDB [hospital]> create table checkup(
+    -> checkup_code char(5) primary key,
+    -> doc_code int(11) not null,
+    -> patient_code int(10) not null,
+    -> diagnosis varchar(30) not null,
+    -> action varchar(30) not null,
+    -> foreign key (doc_code)references doctor (doc_code),
+    -> foreign key (patient_code) references patient (patient_code));
+Query OK, 0 rows affected (0.039 sec)
+
+MariaDB [hospital]> desc checkup;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| checkup_code | char(5)     | NO   | PRI | NULL    |       |
+| doc_code     | int(11)     | NO   | MUL | NULL    |       |
+| patient_code | int(10)     | NO   | MUL | NULL    |       |
+| diagnosis    | varchar(30) | NO   |     | NULL    |       |
+| action       | varchar(30) | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.017 sec)
+
+MariaDB [hospital]> alter table doctor to dede;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'to dede' at line 1
+MariaDB [hospital]> alter table doctor to table dede;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'to table dede' at line 1
+MariaDB [hospital]> alter table doctor rename to dede;
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [hospital]> desc dede;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| doc_code       | int(11)     | NO   | PRI | NULL    |       |
+| doc_name       | varchar(20) | YES  |     | NULL    |       |
+| specialization | varchar(20) | YES  |     | NULL    |       |
+| gender         | char(10)    | YES  |     | NULL    |       |
+| doc_address    | varchar(25) | YES  |     | NULL    |       |
+| email          | varchar(15) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.021 sec)
+
+MariaDB [hospital]> alter table checkup rename to examining;
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [hospital]> show tables;
++--------------------+
+| Tables_in_hospital |
++--------------------+
+| dede               |
+| examining          |
+| madicine           |
+| patient            |
+| prescription       |
++--------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [hospital]> alter table patient add birthplace datatype;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+MariaDB [hospital]> alter table patient
+    -> add birthplace varchar(20)
+    -> ;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc patient;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| patient_code    | int(10)     | NO   | PRI | NULL    |       |
+| patient_name    | varchar(30) | YES  |     | NULL    |       |
+| patient_address | varchar(20) | YES  |     | NULL    |       |
+| birthplace      | varchar(20) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.017 sec)
+
+MariaDB [hospital]> alter table patient
+    -> add gender varchar(10)
+    -> after patient_address;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc patient;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| patient_code    | int(10)     | NO   | PRI | NULL    |       |
+| patient_name    | varchar(30) | YES  |     | NULL    |       |
+| patient_address | varchar(20) | YES  |     | NULL    |       |
+| gender          | varchar(10) | YES  |     | NULL    |       |
+| birthplace      | varchar(20) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.020 sec)
+
+MariaDB [hospital]> alter table patient
+    -> change patient_address patient_addr varchar(30);
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc patient;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| patient_code | int(10)     | NO   | PRI | NULL    |       |
+| patient_name | varchar(30) | YES  |     | NULL    |       |
+| patient_addr | varchar(30) | YES  |     | NULL    |       |
+| gender       | varchar(10) | YES  |     | NULL    |       |
+| birthplace   | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.019 sec)
+
+MariaDB [hospital]> alter table doctor
+    -> change gender gender enum('Male','Female');
+ERROR 1146 (42S02): Table 'hospital.doctor' doesn't exist
+MariaDB [hospital]> alter table dede
+    -> change gender gender enum('Male','Female');
+Query OK, 0 rows affected (0.034 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc dede;
++----------------+-----------------------+------+-----+---------+-------+
+| Field          | Type                  | Null | Key | Default | Extra |
++----------------+-----------------------+------+-----+---------+-------+
+| doc_code       | int(11)               | NO   | PRI | NULL    |       |
+| doc_name       | varchar(20)           | YES  |     | NULL    |       |
+| specialization | varchar(20)           | YES  |     | NULL    |       |
+| gender         | enum('Male','Female') | YES  |     | NULL    |       |
+| doc_address    | varchar(25)           | YES  |     | NULL    |       |
+| email          | varchar(15)           | YES  |     | NULL    |       |
++----------------+-----------------------+------+-----+---------+-------+
+6 rows in set (0.017 sec)
+
+MariaDB [hospital]> desc patient;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| patient_code | int(10)     | NO   | PRI | NULL    |       |
+| patient_name | varchar(30) | YES  |     | NULL    |       |
+| patient_addr | varchar(30) | YES  |     | NULL    |       |
+| gender       | varchar(10) | YES  |     | NULL    |       |
+| birthplace   | varchar(20) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.015 sec)
+
+MariaDB [hospital]> alter table patient
+    -> drop birthplace;
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc patient;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| patient_code | int(10)     | NO   | PRI | NULL    |       |
+| patient_name | varchar(30) | YES  |     | NULL    |       |
+| patient_addr | varchar(30) | YES  |     | NULL    |       |
+| gender       | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.017 sec)
+
+MariaDB [hospital]> alter table patient
+    -> alter gender set default 'Female';
+Query OK, 0 rows affected (0.005 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc patient;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| patient_code | int(10)     | NO   | PRI | NULL    |       |
+| patient_name | varchar(30) | YES  |     | NULL    |       |
+| patient_addr | varchar(30) | YES  |     | NULL    |       |
+| gender       | varchar(10) | YES  |     | Female  |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.013 sec)
+
+MariaDB [hospital]> desc prescription;
++-----------+------------+------+-----+---------+-------+
+| Field     | Type       | Null | Key | Default | Extra |
++-----------+------------+------+-----+---------+-------+
+| pres_code | char(5)    | NO   | PRI | NULL    |       |
+| pres_date | date       | NO   |     | NULL    |       |
+| med_rules | varchar(5) | NO   |     | NULL    |       |
++-----------+------------+------+-----+---------+-------+
+3 rows in set (0.021 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> drop primary key;
+Query OK, 0 rows affected (0.034 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++-----------+------------+------+-----+---------+-------+
+| Field     | Type       | Null | Key | Default | Extra |
++-----------+------------+------+-----+---------+-------+
+| pres_code | char(5)    | NO   |     | NULL    |       |
+| pres_date | date       | NO   |     | NULL    |       |
+| med_rules | varchar(5) | NO   |     | NULL    |       |
++-----------+------------+------+-----+---------+-------+
+3 rows in set (0.017 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> add primary key (press_code);
+ERROR 1072 (42000): Key column 'press_code' doesn't exist in table
+MariaDB [hospital]> alter table prescription
+    -> add primary key (pres_code);
+Query OK, 0 rows affected (0.023 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++-----------+------------+------+-----+---------+-------+
+| Field     | Type       | Null | Key | Default | Extra |
++-----------+------------+------+-----+---------+-------+
+| pres_code | char(5)    | NO   | PRI | NULL    |       |
+| pres_date | date       | NO   |     | NULL    |       |
+| med_rules | varchar(5) | NO   |     | NULL    |       |
++-----------+------------+------+-----+---------+-------+
+3 rows in set (0.014 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> add med_code char(5) not null
+    -> after pres_code,
+    -> add checkup_code char(5) not null
+    -> after med_code;
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| pres_code    | char(5)    | NO   | PRI | NULL    |       |
+| med_code     | char(5)    | NO   |     | NULL    |       |
+| checkup_code | char(5)    | NO   |     | NULL    |       |
+| pres_date    | date       | NO   |     | NULL    |       |
+| med_rules    | varchar(5) | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+5 rows in set (0.018 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> add foreign key (med_code) references madicine(med_code),
+    -> add foreign key (checkup_code) references examining (checkup_code);
+Query OK, 0 rows affected (0.048 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| pres_code    | char(5)    | NO   | PRI | NULL    |       |
+| med_code     | char(5)    | NO   | MUL | NULL    |       |
+| checkup_code | char(5)    | NO   | MUL | NULL    |       |
+| pres_date    | date       | NO   |     | NULL    |       |
+| med_rules    | varchar(5) | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+5 rows in set (0.017 sec)
+
+MariaDB [hospital]> show create table prescription;
++--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table        | Create Table
+
+
+
+
+                                                                 |
++--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| prescription | CREATE TABLE `prescription` (
+  `pres_code` char(5) NOT NULL,
+  `med_code` char(5) NOT NULL,
+  `checkup_code` char(5) NOT NULL,
+  `pres_date` date NOT NULL,
+  `med_rules` varchar(5) NOT NULL,
+  PRIMARY KEY (`pres_code`),
+  KEY `med_code` (`med_code`),
+  KEY `checkup_code` (`checkup_code`),
+  CONSTRAINT `prescription_ibfk_1` FOREIGN KEY (`med_code`) REFERENCES `madicine` (`med_code`),
+  CONSTRAINT `prescription_ibfk_2` FOREIGN KEY (`checkup_code`) REFERENCES `examining` (`checkup_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [hospital]> alter table prescription drop foreign key prescription_ibfk_2;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| pres_code    | char(5)    | NO   | PRI | NULL    |       |
+| med_code     | char(5)    | NO   | MUL | NULL    |       |
+| checkup_code | char(5)    | NO   | MUL | NULL    |       |
+| pres_date    | date       | NO   |     | NULL    |       |
+| med_rules    | varchar(5) | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+5 rows in set (0.008 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> drop med_code;
+ERROR 1553 (HY000): Cannot drop index 'med_code': needed in a foreign key constraint
+MariaDB [hospital]>
+MariaDB [hospital]> desc prescription;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| pres_code    | char(5)    | NO   | PRI | NULL    |       |
+| med_code     | char(5)    | NO   | MUL | NULL    |       |
+| checkup_code | char(5)    | NO   | MUL | NULL    |       |
+| pres_date    | date       | NO   |     | NULL    |       |
+| med_rules    | varchar(5) | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+5 rows in set (0.014 sec)
+
+MariaDB [hospital]> alter table prescription;
+Query OK, 0 rows affected (0.000 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> alter table prescription
+    -> drop foreign key med_code;
+ERROR 1091 (42000): Can't DROP FOREIGN KEY `med_code`; check that it exists
+MariaDB [hospital]> show create table prescription;
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table        | Create Table
+
+
+
+                                                              |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| prescription | CREATE TABLE `prescription` (
+  `pres_code` char(5) NOT NULL,
+  `med_code` char(5) NOT NULL,
+  `checkup_code` char(5) NOT NULL,
+  `pres_date` date NOT NULL,
+  `med_rules` varchar(5) NOT NULL,
+  PRIMARY KEY (`pres_code`),
+  KEY `med_code` (`med_code`),
+  KEY `checkup_code` (`checkup_code`),
+  CONSTRAINT `prescription_ibfk_1` FOREIGN KEY (`med_code`) REFERENCES `madicine` (`med_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> drop prescription_ibfk_1;
+ERROR 1091 (42000): Can't DROP COLUMN `prescription_ibfk_1`; check that it exists
+MariaDB [hospital]> alter table prescription drop foreign key prescription_ibfk_1;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| pres_code    | char(5)    | NO   | PRI | NULL    |       |
+| med_code     | char(5)    | NO   | MUL | NULL    |       |
+| checkup_code | char(5)    | NO   | MUL | NULL    |       |
+| pres_date    | date       | NO   |     | NULL    |       |
+| med_rules    | varchar(5) | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+5 rows in set (0.018 sec)
+
+MariaDB [hospital]> alter table prescription
+    -> drop med_code;
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> desc prescription;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| pres_code    | char(5)    | NO   | PRI | NULL    |       |
+| checkup_code | char(5)    | NO   | MUL | NULL    |       |
+| pres_date    | date       | NO   |     | NULL    |       |
+| med_rules    | varchar(5) | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+4 rows in set (0.017 sec)
+
+MariaDB [hospital]> show create table prescription;
++--------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table        | Create Table
+
+
+      |
++--------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| prescription | CREATE TABLE `prescription` (
+  `pres_code` char(5) NOT NULL,
+  `checkup_code` char(5) NOT NULL,
+  `pres_date` date NOT NULL,
+  `med_rules` varchar(5) NOT NULL,
+  PRIMARY KEY (`pres_code`),
+  KEY `checkup_code` (`checkup_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++--------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
